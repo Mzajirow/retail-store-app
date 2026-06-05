@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: catalog
+  namespace: retail-app
+data:
+  RETAIL_CATALOG_PERSISTENCE_ENDPOINT: "bedrock-mysql.cyz6as8g24w7.us-east-1.rds.amazonaws.com:3306"

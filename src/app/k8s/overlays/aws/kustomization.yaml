@@ -1,0 +1,61 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: retail-app
+
+resources:
+  - ../../base
+
+patches:
+  - path: catalog-patch.yaml
+    target:
+      kind: ConfigMap
+      name: catalog
+  - path: orders-patch.yaml
+    target:
+      kind: ConfigMap
+      name: orders
+  - path: catalog-secret-patch.yaml
+    target:
+      kind: Secret
+      name: catalog-db
+  - path: orders-secret-patch.yaml
+    target:
+      kind: Secret
+      name: orders-db
+  - target:
+      kind: StatefulSet
+      name: catalog-mysql
+    patch: |
+      $patch: delete
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: catalog-mysql
+  - target:
+      kind: StatefulSet
+      name: orders-postgresql
+    patch: |
+      $patch: delete
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: orders-postgresql
+  - target:
+      kind: Service
+      name: catalog-mysql
+    patch: |
+      $patch: delete
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: catalog-mysql
+  - target:
+      kind: Service
+      name: orders-postgresql
+    patch: |
+      $patch: delete
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: orders-postgresql
